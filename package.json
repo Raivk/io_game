@@ -1,0 +1,13 @@
+{
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Raivk/io_game.git"
+  },
+  "name": "io_game",
+  "author": "raivk",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.4.8"
+  }
+}
