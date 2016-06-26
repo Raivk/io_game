@@ -1,9 +1,21 @@
 var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .include('Sprites, Scenes, Input, 2D, Anim, Touch, UI, Audio')
       .setup({ maximize: true })
-      .enableSound()
-      .controls().touch();
+      .enableSound();
 
+Q.input.keyboardControls({
+                           90: "up",
+                           87: "up",
+                           81: "left",
+                           65: "left",
+                           83: "down",
+                           68: "right",
+                           UP: "up",
+                           LEFT: "left",
+                           RIGHT: "right",
+                           DOWN: "down",
+                           32: "fire"
+                         });
 Q.input.mouseControls({cursor:true});
 
 Q.gravityY = 0;

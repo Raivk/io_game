@@ -21,10 +21,11 @@ require([], function () {
         sheet: 'player',
         tagged: false,
         invincible: false,
-        vyMult: 1
+        vyMult: 1,
+        bulletSpeed: 500
       });
       this.add('2d, platformerControls, animation');
-
+      Q.input.on("fire",this,"fire");
       this.addEventListeners();
     },
     addEventListeners: function () {
@@ -71,6 +72,42 @@ require([], function () {
       }
       this.p.angle = Math.atan2(Q.inputs['mouseX'] - this.p.x, - (Q.inputs['mouseY'] - this.p.y) )*(180/Math.PI);
       this.p.socket.emit('update', { playerId: this.p.playerId, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, tagged: this.p.tagged });
+    },
+    fire: function(){
+        console.log("FIRE IN THE HOLE !");
+        var p = this.p;
+        var dx =  Math.sin(p.angle * Math.PI / 180);
+        var dy = -Math.cos(p.angle * Math.PI / 180);
+        var bullet = new Q.Bullet({ x: this.c.points[0][0],
+                                    y: this.c.points[0][1],
+                                    vx: dx * p.bulletSpeed,
+                                    vy: dy * p.bulletSpeed
+                                    });
+        this.stage.insert(bullet);
     }
   });
+
+  Q.Sprite.extend("Bullet",{
+      init: function(p) {
+
+        this._super(p,{
+          w:25,
+          h:25
+        });
+
+        this.add("2d");
+      },
+
+      draw: function(ctx) {
+        ctx.fillStyle = "#CCC";
+        ctx.fillRect(-this.p.cx,-this.p.cy,this.p.w,this.p.h);
+      },
+
+      step: function(dt) {
+        if(!Q.overlap(this,this.stage)) {
+          this.destroy();
+        }
+      }
+  });
+
 });
