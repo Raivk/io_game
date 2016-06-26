@@ -4,6 +4,8 @@ var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
       .enableSound()
       .controls().touch();
 
+Q.input.mouseControls({cursor:true});
+
 Q.gravityY = 0;
 
 require(['socket.io/socket.io.js']);
@@ -45,13 +47,14 @@ require(objectFiles, function () {
       if (actor) {
         actor.player.p.x = data['x'];
         actor.player.p.y = data['y'];
+        actor.player.p.angle = data['angle'];
         actor.player.p.sheet = data['sheet'];
         actor.player.p.opacity = data['opacity'];
         actor.player.p.invincible = data['invincible'];
         actor.player.p.tagged = data['tagged'];
         actor.player.p.update = true;
       } else {
-        var temp = new Q.Actor({ playerId: data['playerId'], x: data['x'], y: data['y'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible'], tagged: data['tagged'] });
+        var temp = new Q.Actor({ playerId: data['playerId'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible'], tagged: data['tagged'] });
         players.push({ player: temp, playerId: data['playerId'] });
         stage.insert(temp);
       }
