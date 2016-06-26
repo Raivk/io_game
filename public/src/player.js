@@ -22,7 +22,7 @@ require([], function () {
         tagged: false,
         invincible: false,
         vyMult: 1,
-        bulletSpeed: 500
+        growth: 5
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
@@ -76,37 +76,30 @@ require([], function () {
     fire: function(){
         console.log("FIRE IN THE HOLE !");
         var p = this.p;
-        var dx =  Math.sin(p.angle * Math.PI / 180);
-        var dy = -Math.cos(p.angle * Math.PI / 180);
-        var bullet = new Q.Bullet({ x: this.c.points[0][0],
-                                    y: this.c.points[0][1],
-                                    vx: dx * p.bulletSpeed,
-                                    vy: dy * p.bulletSpeed
-                                    });
-        //this.stage.insert(bullet);
-        this.p.socket.emit('bullet_fire', { playerId: this.p.id, b_x: bullet.p.x, b_y: bullet.p.y, b_vx: dx*p.bulletSpeed, b_vy: dy*p.bulletSpeed});
+        this.p.socket.emit('shockwave_trigger', { playerId: this.p.id, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: this.p.w, sh_h: this.p.h});
     }
   });
 
-  Q.Sprite.extend("Bullet",{
+  Q.Sprite.extend("Shockwave",{
       init: function(p) {
-
         this._super(p,{
-          w:25,
-          h:25
+            sheet: 'player',
+            opacity: 0.5,
+            time: 0,
+            scale:1,
+            type: 0
         });
-
         this.add("2d");
       },
 
-      draw: function(ctx) {
-        ctx.fillStyle = "#CCC";
-        ctx.fillRect(-this.p.cx,-this.p.cy,this.p.w,this.p.h);
-      },
-
       step: function(dt) {
-        if(!Q.overlap(this,this.stage)) {
-          this.destroy();
+        if(this.p.time == 60){
+            this.destroy();
+        }
+        else{
+            console.log(this.p.scale);
+            this.p.scale = this.p.scale + (this.p.growth/100) ;
+            this.p.time += 1;
         }
       }
   });

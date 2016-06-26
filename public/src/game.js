@@ -72,9 +72,9 @@ require(objectFiles, function () {
       }
     });
 
-    socket.on('bullet_fired', function (data){
-        bullet = new Q.Bullet({ x: data['b_x'],y: data['b_y'],vx: data['b_vx'],vy: data['b_vy']});
-        stage.insert(bullet);
+    socket.on('shockwave_triggered', function (data){
+        shockwave = new Q.Shockwave({ x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+        stage.insert(shockwave);
     })
 
     socket.on('tagged', function (data) {
@@ -102,12 +102,14 @@ require(objectFiles, function () {
     '/images/tiles.png',
     '/maps/arena.json',
     '/images/sprites.png',
-    '/images/sprites.json'
+    '/images/sprites.json',
+    '/images/wave_circle.png'
   ];
 
   Q.load(files.join(','), function () {
     Q.sheet('tiles', '/images/tiles.png', { tilew: 32, tileh: 32 });
     Q.compileSheets('/images/sprites.png', '/images/sprites.json');
     Q.stageScene('arena', 0);
+    Q.sheet('wave_circle','/images/wave_circle.png');
   });
 });
