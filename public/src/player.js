@@ -83,7 +83,8 @@ require([], function () {
                                     vx: dx * p.bulletSpeed,
                                     vy: dy * p.bulletSpeed
                                     });
-        this.stage.insert(bullet);
+        //this.stage.insert(bullet);
+        this.p.socket.emit('bullet_fire', { playerId: this.p.id, b_x: bullet.p.x, b_y: bullet.p.y, b_vx: dx*p.bulletSpeed, b_vy: dy*p.bulletSpeed});
     }
   });
 

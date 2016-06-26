@@ -72,6 +72,11 @@ require(objectFiles, function () {
       }
     });
 
+    socket.on('bullet_fired', function (data){
+        bullet = new Q.Bullet({ x: data['b_x'],y: data['b_y'],vx: data['b_vx'],vy: data['b_vy']});
+        stage.insert(bullet);
+    })
+
     socket.on('tagged', function (data) {
       if (data['playerId'] == selfId) {
         player.p.sheet = 'enemy';

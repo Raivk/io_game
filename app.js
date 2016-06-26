@@ -43,6 +43,10 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('updated', data);
   });
 
+  socket.on('bullet_fire', function (data){
+    io.emit('bullet_fired', data);
+  })
+
   socket.on('tag', function (data) {
     io.emit('tagged', data);
   });
