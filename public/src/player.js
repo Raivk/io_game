@@ -19,35 +19,17 @@ require([], function () {
     init: function (p) {
       this._super(p, {
         sheet: 'player',
-        tagged: false,
         invincible: false,
         vyMult: 1,
-        growth: 5
+        growth: 5,
+        type:0,
+        collisionMask:1
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
       this.addEventListeners();
     },
     addEventListeners: function () {
-      this.on('hit', function (collision) {
-        if (this.p.tagged && collision.obj.isA('Actor') && !collision.obj.p.tagged && !collision.obj.p.invincible) {
-          this.p.socket.emit('tag', { playerId: collision.obj.p.playerId });
-          this.p.tagged = false;
-          this.p.sheet = 'player';
-          this.p.invincible = true;
-          this.p.opacity = 0.5;
-          this.p.speed = 300;
-          this.p.vyMult = 1.5;
-          var temp = this;
-          setTimeout(function () {
-            temp.p.invincible = false;
-            temp.p.opacity = 1;
-            temp.p.speed = 200;
-            temp.p.vyMult = 1;
-          }, 3000);
-        }
-      });
-
       this.on('join', function () {
         this.p.invincible = true;
         this.p.opacity = 0.5;
@@ -71,7 +53,7 @@ require([], function () {
         this.p.vy = 0;
       }
       this.p.angle = Math.atan2(Q.inputs['mouseX'] - this.p.x, - (Q.inputs['mouseY'] - this.p.y) )*(180/Math.PI);
-      this.p.socket.emit('update', { playerId: this.p.playerId, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, tagged: this.p.tagged });
+      this.p.socket.emit('update', { playerId: this.p.playerId, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible});
     },
     fire: function(){
         console.log("FIRE IN THE HOLE !");
@@ -87,20 +69,26 @@ require([], function () {
             opacity: 0.5,
             time: 0,
             scale:1,
-            type: 0
+            type:2,
+            collisionMask:0
         });
         this.add("2d");
+        this.on("hit",this,"collision");
+      },
+
+      collision: function(col) {
+        console.log(col);
       },
 
       step: function(dt) {
-        if(this.p.time == 60){
+        if(this.p.time == 30){
             this.destroy();
         }
         else{
-            console.log(this.p.scale);
             this.p.scale = this.p.scale + (this.p.growth/100) ;
             this.p.time += 1;
         }
+        this.stage.collide(this);
       }
   });
 
