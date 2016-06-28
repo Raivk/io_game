@@ -71,7 +71,7 @@ require(objectFiles, function () {
             shockwave = new Q.Shockwave({ x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
         }
         else{
-            shockwave = new Q.Shockwave({ x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+            shockwave = new Q.Shockwave({ type:16, collisionMask:8, x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
         }
         stage.insert(shockwave);
     })

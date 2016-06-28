@@ -2,7 +2,9 @@ require([], function () {
   Q.Sprite.extend('Actor', {
     init: function (p) {
       this._super(p, {
-        update: true
+        update: true,
+        type: 16,
+        collisionMask: 8
       });
 
       var temp = this;
@@ -22,11 +24,12 @@ require([], function () {
         invincible: false,
         vyMult: 1,
         growth: 5,
-        type:0,
-        collisionMask:1
+        type:8,
+        collisionMask:16
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
+      this.on("hit",this,"collision");
       this.addEventListeners();
     },
     addEventListeners: function () {
@@ -44,6 +47,11 @@ require([], function () {
         }, 3000);
       });
     },
+
+    collision: function(col) {
+        console.log("COLLISION", col);
+    },
+
     step: function (dt) {
       if (Q.inputs['up']) {
         this.p.vy = -200 * this.p.vyMult;
@@ -69,15 +77,10 @@ require([], function () {
             opacity: 0.5,
             time: 0,
             scale:1,
-            type:2,
-            collisionMask:0
+            type:8,
+            collisionMask:16
         });
         this.add("2d");
-        this.on("hit",this,"collision");
-      },
-
-      collision: function(col) {
-        console.log(col);
       },
 
       step: function(dt) {
