@@ -23,7 +23,7 @@ require([], function () {
         sheet: 'player',
         invincible: false,
         vyMult: 1,
-        growth: 5,
+        growth: 7,
         type:8,
         collisionMask:16
       });
