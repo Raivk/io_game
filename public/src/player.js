@@ -73,7 +73,7 @@ require([], function () {
   Q.Sprite.extend("Shockwave",{
       init: function(p) {
         this._super(p,{
-            sheet: 'player',
+            sheet: 'wave',
             opacity: 0.5,
             time: 0,
             scale:1,

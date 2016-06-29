@@ -88,13 +88,14 @@ require(objectFiles, function () {
     '/maps/arena.json',
     '/images/sprites.png',
     '/images/sprites.json',
-    '/images/wave_circle.png'
+    '/images/wave_circle.png',
+    '/images/wave_circle.json'
   ];
 
   Q.load(files.join(','), function () {
     Q.sheet('tiles', '/images/tiles.png', { tilew: 32, tileh: 32 });
     Q.compileSheets('/images/sprites.png', '/images/sprites.json');
     Q.stageScene('arena', 0);
-    Q.sheet('wave_circle','/images/wave_circle.png');
+    Q.compileSheets('/images/wave_circle.png','/images/wave_circle.json');
   });
 });
