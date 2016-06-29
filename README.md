@@ -5,6 +5,10 @@ Installation :
 
 Install node.js
 clone repository
+in root of project:
+run the following commands :
+npm install --save express
+npm install --save socket.io
 
 Run :
 
