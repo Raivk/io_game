@@ -49,7 +49,11 @@ require([], function () {
     },
 
     collision: function(col) {
-        console.log("COLLISION", col);
+        console.log("COLLISION", col.obj.p.sheet);
+        if(col.obj.p.sheet == "wave"){
+            this.p.x -= -col.normalX * 50;
+            this.p.y -= -col.normalY * 50;
+        }
     },
 
     step: function (dt) {
