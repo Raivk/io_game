@@ -53,14 +53,18 @@ require(objectFiles, function () {
       })[0];
       if (actor) {
         actor.player.p.x = data['x'];
+        actor.player.p.hp = data['hp'];
         actor.player.p.y = data['y'];
         actor.player.p.angle = data['angle'];
         actor.player.p.sheet = data['sheet'];
         actor.player.p.opacity = data['opacity'];
         actor.player.p.invincible = data['invincible'];
         actor.player.p.update = true;
+        if(actor.player.p.hp <= 0){
+            actor.player.destroy();
+        }
       } else {
-        var temp = new Q.Actor({ playerId: data['playerId'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
+        var temp = new Q.Actor({ playerId: data['playerId'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
         players.push({ player: temp, playerId: data['playerId'] });
         stage.insert(temp);
       }

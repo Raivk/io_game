@@ -59,6 +59,10 @@ require([], function () {
             UiHP.innerHTML = 'HP: ' + this.p.hp;
             this.p.x -= -col.normalX * 50;
             this.p.y -= -col.normalY * 50;
+            if(this.p.hp <= 0){
+                this.destroy();
+                //Emit destroy to server
+            }
         }
     },
 
@@ -71,7 +75,7 @@ require([], function () {
         this.p.vy = 0;
       }
       this.p.angle = Math.atan2(Q.inputs['mouseX'] - this.p.x, - (Q.inputs['mouseY'] - this.p.y) )*(180/Math.PI);
-      this.p.socket.emit('update', { playerId: this.p.playerId, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible});
+      this.p.socket.emit('update', { playerId: this.p.playerId, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp});
     },
     fire: function(){
         console.log("FIRE IN THE HOLE !");
