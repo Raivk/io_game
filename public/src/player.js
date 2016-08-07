@@ -1,4 +1,7 @@
 require([], function () {
+
+  var UiHP = document.getElementById("hp");
+
   Q.Sprite.extend('Actor', {
     init: function (p) {
       this._super(p, {
@@ -22,6 +25,7 @@ require([], function () {
       this._super(p, {
         sheet: 'player',
         invincible: false,
+        hp: 100,
         vyMult: 1,
         growth: 7,
         type:8,
@@ -51,6 +55,8 @@ require([], function () {
     collision: function(col) {
         console.log("COLLISION", col.obj.p.sheet);
         if(col.obj.p.sheet == "wave"){
+            this.p.hp = this.p.hp - col.obj.p.damage;
+            UiHP.innerHTML = 'HP: ' + this.p.hp;
             this.p.x -= -col.normalX * 50;
             this.p.y -= -col.normalY * 50;
         }
@@ -79,6 +85,7 @@ require([], function () {
         this._super(p,{
             sheet: 'wave',
             opacity: 0.5,
+            damage: 25,
             time: 0,
             scale:1,
             type:8,

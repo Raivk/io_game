@@ -25,6 +25,7 @@ require(['socket.io/socket.io.js']);
 var players = [];
 var socket = io.connect('http://localhost:8080');
 var UiPlayers = document.getElementById("players");
+var UiHP = document.getElementById("hp");
 var selfId, player;
 
 var objectFiles = [
@@ -40,6 +41,7 @@ require(objectFiles, function () {
     socket.on('connected', function (data) {
       selfId = data['playerId'];
       player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket });
+      UiHP.innerHTML = 'HP: ' + player.p.hp;
       stage.insert(player);
       player.trigger('join');
       stage.add('viewport').follow(player);
@@ -75,6 +77,7 @@ require(objectFiles, function () {
         }
         stage.insert(shockwave);
     })
+
   }
 
   Q.scene('arena', function (stage) {
