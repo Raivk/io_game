@@ -18,12 +18,13 @@ var id = 0;
 
 //Code executed on each new connection
 io.on('connection', function (socket) {
-  playerCount++;
-  id++;
-  setTimeout(function () {
-    socket.emit('connected', { playerId: id });
+
+  socket.on('play', function(data){
+    playerCount++;
+    id++;
+    socket.emit('connected', { playerId: id , pseudo:data['pseudo']});
     io.emit('count', { playerCount: playerCount });
-  }, 1500);
+  });
 
   socket.on('disconnect', function () {
     playerCount--;

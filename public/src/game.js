@@ -26,11 +26,18 @@ var players = [];
 var socket = io.connect('http://localhost:8080');
 var UiPlayers = document.getElementById("players");
 var UiHP = document.getElementById("hp");
+var UiName = document.getElementById("name");
 var selfId, player;
 
 var objectFiles = [
   './src/player'
 ];
+
+function play(){
+    socket.emit('play',{pseudo:document.getElementById("pseudo").value});
+    document.getElementById("pseudo").style = "visibility:hidden";
+    document.getElementById("play_button").style = "visibility:hidden";
+}
 
 require(objectFiles, function () {
   function setUp (stage) {
@@ -40,14 +47,16 @@ require(objectFiles, function () {
 
     socket.on('connected', function (data) {
       selfId = data['playerId'];
-      player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket });
+      player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket, name: data['pseudo'] });
       UiHP.innerHTML = 'HP: ' + player.p.hp;
+      UiName.innerHTML = 'Name: ' + player.p.name;
       stage.insert(player);
       player.trigger('join');
       stage.add('viewport').follow(player);
     });
 
     socket.on('updated', function (data) {
+      //USE players pseudo to display it. Need to find a way to easily display a pseudo in game
       var actor = players.filter(function (obj) {
         return obj.playerId == data['playerId'];
       })[0];
