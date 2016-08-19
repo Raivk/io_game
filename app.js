@@ -12,23 +12,15 @@ app.get('/', function(req, res){
   res.render('/index.html');
 });
 
-//Init a player count, and an id, which we increment to assign a unique id to each new player
-var playerCount = 0;
+//Init an id, which we increment to assign a unique id to each new player
 var id = 0;
 
 //Code executed on each new connection
 io.on('connection', function (socket) {
 
   socket.on('play', function(data){
-    playerCount++;
     id++;
     socket.emit('connected', { playerId: id , pseudo:data['pseudo']});
-    io.emit('count', { playerCount: playerCount });
-  });
-
-  socket.on('disconnect', function () {
-    playerCount--;
-    io.emit('count', { playerCount: playerCount });
   });
 
   socket.on('update', function (data) {

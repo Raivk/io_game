@@ -24,7 +24,6 @@ require(['socket.io/socket.io.js']);
 
 var players = [];
 var socket = io.connect('http://localhost:8080');
-var UiPlayers = document.getElementById("players");
 var UiHP = document.getElementById("hp");
 var UiName = document.getElementById("name");
 var selfId, player;
@@ -41,9 +40,6 @@ function play(){
 
 require(objectFiles, function () {
   function setUp (stage) {
-    socket.on('count', function (data) {
-      UiPlayers.innerHTML = 'Players: ' + data['playerCount'];
-    });
 
     socket.on('connected', function (data) {
       selfId = data['playerId'];
