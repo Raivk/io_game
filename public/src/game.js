@@ -51,12 +51,17 @@ require(objectFiles, function () {
       UiHP.innerHTML = 'HP: ' + player.p.hp;
       UiName.innerHTML = 'Name: ' + player.p.name;
       stage.insert(player);
+      stage.insert(new Q.UI.Text({
+          label: player.p.name,
+          color: "black",
+          x: 0,
+          y: 0
+      }), player);
       player.trigger('join');
       stage.add('viewport').follow(player);
     });
 
     socket.on('updated', function (data) {
-      //USE players pseudo to display it. Need to find a way to easily display a pseudo in game
       var actor = players.filter(function (obj) {
         return obj.playerId == data['playerId'];
       })[0];
@@ -73,9 +78,16 @@ require(objectFiles, function () {
             actor.player.destroy();
         }
       } else {
-        var temp = new Q.Actor({ playerId: data['playerId'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
+        var temp = new Q.Actor({ playerId: data['playerId'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
         players.push({ player: temp, playerId: data['playerId'] });
         stage.insert(temp);
+        stage.insert(new Q.UI.Text({
+          label: temp.p.name,
+          color: "black",
+          x: 0,
+          y: 0
+        }), temp);
+
       }
     });
 
