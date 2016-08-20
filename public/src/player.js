@@ -1,7 +1,5 @@
 require([], function () {
 
-  var UiHP = document.getElementById("hp");
-
   Q.Sprite.extend('Actor', {
     init: function (p) {
       this._super(p, {
@@ -56,7 +54,6 @@ require([], function () {
         console.log("COLLISION", col.obj.p.sheet);
         if(col.obj.p.sheet == "wave"){
             this.p.hp = this.p.hp - col.obj.p.damage;
-            UiHP.innerHTML = 'HP: ' + this.p.hp;
             this.p.x -= -col.normalX * 50;
             this.p.y -= -col.normalY * 50;
             if(this.p.hp <= 0){
@@ -75,6 +72,12 @@ require([], function () {
         this.p.vy = 0;
       }
       this.p.angle = Math.atan2(Q.inputs['mouseX'] - this.p.x, - (Q.inputs['mouseY'] - this.p.y) )*(180/Math.PI);
+      var player = this.p;
+      this.children.forEach(function(child){
+        if(child.p.hp_bar){
+            child.p.label = ""+player.hp;
+        }
+      });
       this.p.socket.emit('update', { playerId: this.p.playerId, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp});
     },
     fire: function(){

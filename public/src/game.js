@@ -24,8 +24,6 @@ require(['socket.io/socket.io.js']);
 
 var players = [];
 var socket = io.connect('http://localhost:8080');
-var UiHP = document.getElementById("hp");
-var UiName = document.getElementById("name");
 var selfId, player;
 
 var objectFiles = [
@@ -43,8 +41,6 @@ require(objectFiles, function () {
     socket.on('connected', function (data) {
       selfId = data['playerId'];
       player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket, name: data['pseudo'] });
-      UiHP.innerHTML = 'HP: ' + player.p.hp;
-      UiName.innerHTML = 'Name: ' + player.p.name;
       stage.insert(player);
       stage.insert(new Q.UI.Text({
           label: player.p.name,
@@ -52,6 +48,14 @@ require(objectFiles, function () {
           x: 0,
           y: 0
       }), player);
+      stage.insert(new Q.UI.Text({
+        label: ""+player.p.hp,
+        color: "black",
+        x:0,
+        y:25,
+        hp_bar:true
+      }), player);
+      console.log(player);
       player.trigger('join');
       stage.add('viewport').follow(player);
     });
@@ -69,6 +73,11 @@ require(objectFiles, function () {
         actor.player.p.opacity = data['opacity'];
         actor.player.p.invincible = data['invincible'];
         actor.player.p.update = true;
+        actor.player.children.forEach(function(child){
+            if(child.p.hp_bar){
+                child.p.label = ""+actor.player.p.hp;
+            }
+        });
         if(actor.player.p.hp <= 0){
             actor.player.destroy();
         }
@@ -82,7 +91,13 @@ require(objectFiles, function () {
           x: 0,
           y: 0
         }), temp);
-
+        stage.insert(new Q.UI.Text({
+            label: ""+temp.p.hp,
+            color: "black",
+            x: 0,
+            y: 25,
+            hp_bar:100
+        }), temp);
       }
     });
 

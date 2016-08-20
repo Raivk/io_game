@@ -1,0 +1,48 @@
+/*
+    Color palette :
+    Primary : #182337
+    Used almost everywhere
+    Accent : #979073
+    Used for important things
+    Warn/error : #B54444
+    Used for errors etc
+
+    Link to see palette : http://www.palettable.io/182337-979073-105DA1-B54444
+*/
+
+.primary-background{
+    background-color:#182337;
+}
+
+.primary-foreground{
+    color:#182337;
+}
+
+.accent-background{
+    background-color:#979073;
+}
+
+.accent-foreground{
+    color:#979073;
+}
+
+.white-background{
+    background-color:white;
+}
+
+.white-foreground{
+    color:white;
+}
+
+.warn-background{
+    background-color:#B54444;
+}
+
+.warn-foreground{
+    color:#B54444;
+}
+
+.hover_primary:hover{
+    background-color:#182337;
+    color:white;
+}
