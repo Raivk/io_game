@@ -34,8 +34,7 @@ var objectFiles = [
 
 function play(){
     socket.emit('play',{pseudo:document.getElementById("pseudo").value});
-    document.getElementById("pseudo").style = "visibility:hidden";
-    document.getElementById("play_button").style = "visibility:hidden";
+    document.getElementById("modal").style = "visibility:hidden";
 }
 
 require(objectFiles, function () {

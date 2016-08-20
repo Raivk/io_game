@@ -2,6 +2,7 @@
 <head>
     <script src="lib/quintus-all.js"></script>
     <script src="socket.io/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/concise.min.css" />
 </head>
 <style>
     .players {
@@ -23,10 +24,21 @@
     }
   </style>
 <body>
+<div id="modal" class="modal">
+    <div class="modal-container">
+        <div class="modal-header">
+            Modal Header
+            <a href="#close" class="modal-close">&times;</a>
+        </div>
+        <div class="modal-body">
+            <input id="pseudo">
+            <button onclick="play();" id="play_button">play</button>
+        </div>
+    </div>
+</div>
+<a href="#modal">open</a>
 <span id="name"></span>
 <span id="hp" style="" class="hp"></span>
-<input id="pseudo">
-<button onclick="play();" id="play_button">play</button>
 <script src="/lib/require.js"></script>
 <script src="src/game.js"></script>
 </body>
