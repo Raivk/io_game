@@ -44,15 +44,15 @@ require(objectFiles, function () {
       stage.insert(player);
       stage.insert(new Q.UI.Text({
           label: player.p.name,
-          color: "black",
+          color: "grey",
           x: 0,
-          y: 0
+          y: -40
       }), player);
       stage.insert(new Q.UI.Text({
         label: ""+player.p.hp,
-        color: "black",
+        color: "grey",
         x:0,
-        y:25,
+        y:40,
         hp_bar:true
       }), player);
       console.log(player);
@@ -87,15 +87,15 @@ require(objectFiles, function () {
         stage.insert(temp);
         stage.insert(new Q.UI.Text({
           label: temp.p.name,
-          color: "black",
+          color: "grey",
           x: 0,
-          y: 0
+          y: -40
         }), temp);
         stage.insert(new Q.UI.Text({
             label: ""+temp.p.hp,
-            color: "black",
+            color: "grey",
             x: 0,
-            y: 25,
+            y: 40,
             hp_bar:100
         }), temp);
       }
@@ -124,16 +124,16 @@ require(objectFiles, function () {
   var files = [
     '/images/tiles.png',
     '/maps/arena.json',
-    '/images/sprites.png',
-    '/images/sprites.json',
-    '/images/wave_circle.png',
-    '/images/wave_circle.json'
+    '/images/player.png',
+    '/images/player.json',
+    '/images/wave.png',
+    '/images/wave.json'
   ];
 
   Q.load(files.join(','), function () {
     Q.sheet('tiles', '/images/tiles.png', { tilew: 32, tileh: 32 });
-    Q.compileSheets('/images/sprites.png', '/images/sprites.json');
+    Q.compileSheets('/images/player.png', '/images/player.json');
     Q.stageScene('arena', 0);
-    Q.compileSheets('/images/wave_circle.png','/images/wave_circle.json');
+    Q.compileSheets('/images/wave.png','/images/wave.json');
   });
 });

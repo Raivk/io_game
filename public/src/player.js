@@ -3,6 +3,8 @@ require([], function () {
   Q.Sprite.extend('Actor', {
     init: function (p) {
       this._super(p, {
+        sheet: 'player',
+        frame: 1,
         update: true,
         type: 16,
         collisionMask: 8
@@ -22,6 +24,7 @@ require([], function () {
     init: function (p) {
       this._super(p, {
         sheet: 'player',
+        frame: 0,
         invincible: false,
         hp: 100,
         vyMult: 1,
