@@ -30,7 +30,7 @@ require([], function () {
         vyMult: 1,
         growth: 7,
         type:8,
-        collisionMask:16
+        collisionMask:1
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");

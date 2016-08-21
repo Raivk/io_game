@@ -131,7 +131,7 @@ require(objectFiles, function () {
   ];
 
   Q.load(files.join(','), function () {
-    Q.sheet('tiles', '/images/tiles.png', { tilew: 32, tileh: 32 });
+    Q.sheet('tiles', '/images/tiles.png', { tilew: 40, tileh: 40 });
     Q.compileSheets('/images/player.png', '/images/player.json');
     Q.stageScene('arena', 0);
     Q.compileSheets('/images/wave.png','/images/wave.json');
