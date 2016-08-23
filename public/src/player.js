@@ -93,7 +93,7 @@ require([], function () {
       init: function(p) {
         this._super(p,{
             sheet: 'wave',
-            opacity: 0.5,
+            opacity: 1,
             damage: 25,
             time: 0,
             scale:1,
