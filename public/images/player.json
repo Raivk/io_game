@@ -1,1 +1,1 @@
-{"player":{"sx":0,"sy":0,"cols":1,"tilew":40,"tileh":40,"frames":1},"enemy":{"sx":0,"sy":40,"cols":1,"tilew":40,"tileh":40,"frames":1}}
+{"player_blue":{"sx":0,"sy":0,"cols":1,"tilew":100,"tileh":100,"frames":1},"actor_blue":{"sx":0,"sy":100,"cols":1,"tilew":100,"tileh":100,"frames":1},"player_red":{"sx":0,"sy":200,"cols":1,"tilew":100,"tileh":100,"frames":1},"actor_red":{"sx":0,"sy":300,"cols":1,"tilew":100,"tileh":100,"frames":1}}

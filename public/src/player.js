@@ -3,8 +3,8 @@ require([], function () {
   Q.Sprite.extend('Actor', {
     init: function (p) {
       this._super(p, {
-        sheet: 'player',
-        frame: 1,
+        sheet: 'player_blue',
+        frame:3,
         update: true,
         type: 16,
         collisionMask: 8
@@ -23,12 +23,11 @@ require([], function () {
   Q.Sprite.extend('Player', {
     init: function (p) {
       this._super(p, {
-        sheet: 'player',
-        frame: 0,
+        sheet: 'player_blue',
         invincible: false,
         hp: 100,
         vyMult: 1,
-        growth: 7,
+        growth: 10,
         type:8,
         collisionMask:1
       });
@@ -86,7 +85,7 @@ require([], function () {
     fire: function(){
         console.log("FIRE IN THE HOLE !");
         var p = this.p;
-        this.p.socket.emit('shockwave_trigger', { playerId: this.p.id, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: this.p.w, sh_h: this.p.h});
+        this.p.socket.emit('shockwave_trigger', { playerId: this.p.id, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: 40, sh_h: 40});
     }
   });
 
