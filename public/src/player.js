@@ -89,9 +89,14 @@ require([], function () {
     }
   });
 
+  Q.animations('wave_anim',{
+    evolve:{frames:[1,2,3,4,5,6],rate:1/6,loop:false}
+  });
+
   Q.Sprite.extend("Shockwave",{
       init: function(p) {
         this._super(p,{
+            sprite:'wave_anim',
             sheet: 'wave',
             opacity: 1,
             damage: 25,
@@ -101,6 +106,7 @@ require([], function () {
             collisionMask:16
         });
         this.add("2d");
+        this.add("animation");
       },
 
       step: function(dt) {

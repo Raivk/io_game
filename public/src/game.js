@@ -106,9 +106,11 @@ require(objectFiles, function () {
         console.log(player.p.id);
         if(data['playerId'] == player.p.id){
             shockwave = new Q.Shockwave({ x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+            shockwave.play("evolve");
         }
         else{
             shockwave = new Q.Shockwave({ type:16, collisionMask:8, x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+            shockwave.play("evolve");
         }
         stage.insert(shockwave);
     })
