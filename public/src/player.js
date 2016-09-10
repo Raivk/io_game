@@ -25,6 +25,7 @@ require([], function () {
       this._super(p, {
         sheet: 'player_blue',
         invincible: false,
+        cooldown:false,
         hp: 100,
         vyMult: 1,
         growth: 10,
@@ -53,19 +54,37 @@ require([], function () {
     },
 
     collision: function(col) {
-        console.log("COLLISION", col.obj.p.sheet);
         if(col.obj.p.sheet == "wave"){
-            this.p.hp = this.p.hp - col.obj.p.damage;
-            this.p.x -= -col.normalX * 50;
-            this.p.y -= -col.normalY * 50;
-            if(this.p.hp <= 0){
-                this.destroy();
-                //Emit destroy to server
+            if(!this.p.invincible){
+                var playerProps = this.p;
+                this.p.invincible = true;
+                this.p.opacity = 0.5;
+                this.p.speed = 300;
+                this.p.vyMult = 1.5;
+                this.p.hp = this.p.hp - col.obj.p.damage;
+                this.p.x -= -col.normalX * 50;
+                this.p.y -= -col.normalY * 50;
+                if(this.p.hp <= 0){
+                    this.destroy();
+                    //Emit destroy to server
+                }
+                setTimeout(function(){
+                    playerProps.invincible = false;
+                    playerProps.opacity = 1;
+                    playerProps.speed = 200;
+                    playerProps.vyMult = 1;
+                },500)
+            }
+            else{
+                console.log("Invincible");
             }
         }
     },
 
     step: function (dt) {
+      if(this.p.x >= 2800 || this.p.y >= 900 || this.p.x <= 0 || this.p.y <= 0){
+        this.destroy();
+      }
       if (Q.inputs['up']) {
         this.p.vy = -200 * this.p.vyMult;
       } else if (Q.inputs['down']) {
@@ -83,9 +102,18 @@ require([], function () {
       this.p.socket.emit('update', { playerId: this.p.playerId, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp});
     },
     fire: function(){
-        console.log("FIRE IN THE HOLE !");
-        var p = this.p;
-        this.p.socket.emit('shockwave_trigger', { playerId: this.p.id, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: 40, sh_h: 40});
+        if(!this.p.cooldown){
+            this.p.cooldown = true;
+            var p = this.p;
+            this.p.socket.emit('shockwave_trigger', { playerId: this.p.id, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: 40, sh_h: 40});
+            setTimeout(function(){
+                p.cooldown = false;
+            },750);
+        }
+        else{
+            console.log("hey, i'm in cooldown.");
+            //Display something on screen ?
+        }
     }
   });
 
