@@ -11,38 +11,38 @@
 */
 
 .primary-background{
-    background-color:#182337;
+    background-color:#182337 !important;
 }
 
 .primary-foreground{
-    color:#182337;
+    color:#182337 !important;
 }
 
 .accent-background{
-    background-color:#979073;
+    background-color:#979073 !important;
 }
 
 .accent-foreground{
-    color:#979073;
+    color:#979073 !important;
 }
 
 .white-background{
-    background-color:white;
+    background-color:white !important;
 }
 
 .white-foreground{
-    color:white;
+    color:white !important;
 }
 
 .warn-background{
-    background-color:#B54444;
+    background-color:#B54444 !important;
 }
 
 .warn-foreground{
-    color:#B54444;
+    color:#B54444 !important;
 }
 
 .hover_primary:hover{
-    background-color:#182337;
+    background-color:#182337 !important;
     color:white;
 }

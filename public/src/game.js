@@ -42,19 +42,8 @@ require(objectFiles, function () {
       selfId = data['playerId'];
       player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket, name: data['pseudo'] });
       stage.insert(player);
-      stage.insert(new Q.UI.Text({
-          label: player.p.name,
-          color: "grey",
-          x: 0,
-          y: -40
-      }), player);
-      stage.insert(new Q.UI.Text({
-        label: ""+player.p.hp,
-        color: "grey",
-        x:0,
-        y:40,
-        hp_bar:true
-      }), player);
+      document.getElementById("player_name").innerHTML = player.p.name;
+      document.getElementById("lifebar").style = "visibility:visible";
       player.trigger('join');
       stage.add('viewport').follow(player);
     });

@@ -1,3 +1,16 @@
+#player_name{
+    text-align:center;
+}
+
+.UI_Player{
+    position:absolute;
+    bottom:15%;
+    width: 40%;
+    z-index:1000;
+    margin-left:30%;
+    margin-right:30%;
+}
+
 .players {
   z-index: 5;
   position: absolute;

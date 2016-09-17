@@ -62,6 +62,7 @@ require([], function () {
                 this.p.speed = 300;
                 this.p.vyMult = 1.5;
                 this.p.hp = this.p.hp - col.obj.p.damage;
+                document.getElementById("life_amount").style = "width:"+this.p.hp+"%;";
                 this.p.x -= -col.normalX * 50;
                 this.p.y -= -col.normalY * 50;
                 if(this.p.hp <= 0){
