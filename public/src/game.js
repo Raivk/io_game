@@ -90,8 +90,6 @@ require(objectFiles, function () {
     });
 
     socket.on('shockwave_triggered', function (data){
-        console.log("wave id : ",data['playerId']);
-        console.log("player id : ",player.p.playerId);
         if(data['playerId'] == player.p.playerId){
             shockwave = new Q.Shockwave({ x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
             shockwave.play("evolve");
