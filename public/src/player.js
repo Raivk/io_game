@@ -75,7 +75,7 @@ require([], function () {
                     playerProps.opacity = 1;
                     playerProps.speed = 200;
                     playerProps.vyMult = 1;
-                },500)
+                },750)
             }
             else{
                 console.log("Invincible");
@@ -107,7 +107,7 @@ require([], function () {
         if(!this.p.cooldown){
             this.p.cooldown = true;
             var p = this.p;
-            this.p.socket.emit('shockwave_trigger', { playerId: this.p.id, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: 40, sh_h: 40});
+            this.p.socket.emit('shockwave_trigger', { playerId: this.p.playerId, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: 40, sh_h: 40});
             setTimeout(function(){
                 p.cooldown = false;
             },750);
@@ -133,7 +133,7 @@ require([], function () {
             time: 0,
             scale:1,
             type:8,
-            collisionMask:16
+            collisionMask:0
         });
         this.add("2d");
         this.add("animation");
