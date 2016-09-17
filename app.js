@@ -27,6 +27,10 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('updated', data);
   });
 
+  socket.on('death', function (data){
+    socket.broadcast.emit("player_death",data);
+  })
+
   socket.on('shockwave_trigger', function (data){
     io.emit('shockwave_triggered', data);
   });

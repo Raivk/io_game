@@ -66,7 +66,7 @@ require([], function () {
                 this.p.y -= -col.normalY * 50;
                 if(this.p.hp <= 0){
                     this.destroy();
-                    //Emit destroy to server
+                    this.p.socket.emit('death', {playerId: this.p.playerId});
                 }
                 setTimeout(function(){
                     playerProps.invincible = false;

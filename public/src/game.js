@@ -112,6 +112,22 @@ require(objectFiles, function () {
         stage.insert(shockwave);
     })
 
+    socket.on('player_death',function (data){
+        if(data['playerId'] == selfId){
+            //here we are dead.
+            //Do something to say to the player "uh oh you're dead !".
+        }
+        else{
+            //Someone else died. need to kill it immediately
+            var player_to_kill = players.filter(function (obj) {
+                return obj.playerId == data['playerId'];
+            })[0];
+            if(player_to_kill){
+                player_to_kill.player.destroy();
+            }
+        }
+    })
+
   }
 
   Q.scene('arena', function (stage) {
