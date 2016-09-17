@@ -67,6 +67,7 @@ require([], function () {
                 if(this.p.hp <= 0){
                     this.destroy();
                     this.p.socket.emit('death', {playerId: this.p.playerId});
+                    document.getElementById("death-modal").style = "visibility:visible";
                 }
                 setTimeout(function(){
                     playerProps.invincible = false;
