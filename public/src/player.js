@@ -27,6 +27,7 @@ require([], function () {
         invincible: false,
         cooldown:false,
         hp: 100,
+        scale:1,
         vyMult: 1,
         growth: 10,
         type:8,
@@ -62,6 +63,8 @@ require([], function () {
                 this.p.speed = 300;
                 this.p.vyMult = 1.5;
                 this.p.hp = this.p.hp - col.obj.p.damage;
+                console.log(this.p.scale);
+                this.p.scale = (this.p.scale)/1.5;
                 document.getElementById("life_amount").style = "width:"+this.p.hp+"%;";
                 this.p.x -= -col.normalX * 50;
                 this.p.y -= -col.normalY * 50;
@@ -101,7 +104,7 @@ require([], function () {
             child.p.label = ""+player.hp;
         }
       });
-      this.p.socket.emit('update', { playerId: this.p.playerId, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp});
+      this.p.socket.emit('update', { playerId: this.p.playerId, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp, scale: this.p.scale});
     },
     fire: function(){
         if(!this.p.cooldown){

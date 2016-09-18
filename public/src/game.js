@@ -60,6 +60,7 @@ require(objectFiles, function () {
         actor.player.p.sheet = data['sheet'];
         actor.player.p.opacity = data['opacity'];
         actor.player.p.invincible = data['invincible'];
+        actor.player.p.scale = data['scale'];
         actor.player.p.update = true;
         actor.player.children.forEach(function(child){
             if(child.p.hp_bar){
