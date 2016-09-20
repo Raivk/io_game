@@ -31,7 +31,9 @@ require([], function () {
         vyMult: 1,
         growth: 10,
         type:8,
-        collisionMask:1
+        collisionMask:1,
+        regen_time:0,
+        cooldown_time:0
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
@@ -63,7 +65,6 @@ require([], function () {
                 this.p.speed = 300;
                 this.p.vyMult = 1.5;
                 this.p.hp = this.p.hp - col.obj.p.damage;
-                document.getElementById("life_amount").style = "width:"+this.p.hp+"%;";
                 this.p.x -= -col.normalX * 50;
                 this.p.y -= -col.normalY * 50;
                 if(this.p.hp <= 0){
@@ -97,6 +98,25 @@ require([], function () {
         this.p.vy = 0;
       }
       this.p.angle = Math.atan2(Q.inputs['mouseX'] - this.p.x, - (Q.inputs['mouseY'] - this.p.y) )*(180/Math.PI);
+      if(this.p.regen_time == 30){
+        this.p.regen_time = 0;
+        if(this.p.hp < 100){
+            this.p.hp++;
+        }
+      }
+      else{
+        this.p.regen_time++;
+      }
+      if(this.p.cooldown){
+        this.p.cooldown_time++;
+        if(this.p.cooldown_time >= 44){
+            document.getElementById("cooldown_progress").style="width:100%";
+        }
+        else{
+            document.getElementById("cooldown_progress").style="width:"+(((this.p.cooldown_time*17)/750)*100)+"%";
+        }
+        console.log(this.p.cooldown_time);
+      }
       this.p.scale = this.p.hp / 100;
       var player = this.p;
       this.children.forEach(function(child){
@@ -104,15 +124,19 @@ require([], function () {
             child.p.label = ""+player.hp;
         }
       });
+      document.getElementById("life_amount").style = "width:"+this.p.hp+"%;";
       this.p.socket.emit('update', { playerId: this.p.playerId, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp, scale: this.p.scale});
     },
     fire: function(){
         if(!this.p.cooldown){
             this.p.cooldown = true;
+            document.getElementById("cooldown_display").style="visibility:visible";
             var p = this.p;
             this.p.socket.emit('shockwave_trigger', { playerId: this.p.playerId, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: 40, sh_h: 40});
             setTimeout(function(){
                 p.cooldown = false;
+                p.cooldown_time = 0;
+                document.getElementById("cooldown_display").style="visibility:hidden";
             },750);
         }
         else{
