@@ -71,7 +71,7 @@ require(objectFiles, function () {
             actor.player.destroy();
         }
       } else {
-        var temp = new Q.Actor({ playerId: data['playerId'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
+        var temp = new Q.Actor({ playerId: data['playerId'],scale: data['scale'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
         players.push({ player: temp, playerId: data['playerId'] });
         stage.insert(temp);
         stage.insert(new Q.UI.Text({

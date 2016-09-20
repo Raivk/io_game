@@ -63,8 +63,6 @@ require([], function () {
                 this.p.speed = 300;
                 this.p.vyMult = 1.5;
                 this.p.hp = this.p.hp - col.obj.p.damage;
-                console.log(this.p.scale);
-                this.p.scale = (this.p.scale)/1.5;
                 document.getElementById("life_amount").style = "width:"+this.p.hp+"%;";
                 this.p.x -= -col.normalX * 50;
                 this.p.y -= -col.normalY * 50;
@@ -89,6 +87,7 @@ require([], function () {
     step: function (dt) {
       if(this.p.x >= 2800 || this.p.y >= 900 || this.p.x <= 0 || this.p.y <= 0){
         this.destroy();
+        document.getElementById("death-modal").style = "visibility:visible";
       }
       if (Q.inputs['up']) {
         this.p.vy = -200 * this.p.vyMult;
@@ -98,6 +97,7 @@ require([], function () {
         this.p.vy = 0;
       }
       this.p.angle = Math.atan2(Q.inputs['mouseX'] - this.p.x, - (Q.inputs['mouseY'] - this.p.y) )*(180/Math.PI);
+      this.p.scale = this.p.hp / 100;
       var player = this.p;
       this.children.forEach(function(child){
         if(child.p.hp_bar){
