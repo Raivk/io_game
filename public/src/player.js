@@ -33,7 +33,8 @@ require([], function () {
         type:8,
         collisionMask:1,
         regen_time:0,
-        cooldown_time:0
+        cooldown_time:0,
+        score:0
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
@@ -67,9 +68,10 @@ require([], function () {
                 this.p.hp = this.p.hp - col.obj.p.damage;
                 this.p.x -= -col.normalX * 50;
                 this.p.y -= -col.normalY * 50;
+                this.p.socket.emit('been_hit', {playerId: col.obj.p.sent_by});
                 if(this.p.hp <= 0){
                     this.destroy();
-                    this.p.socket.emit('death', {playerId: this.p.playerId});
+                    this.p.socket.emit('death', {playerId: this.p.playerId,sent_by: col.obj.p.sent_by});
                     document.getElementById("death-modal").style = "visibility:visible";
                 }
                 setTimeout(function(){
@@ -115,17 +117,11 @@ require([], function () {
         else{
             document.getElementById("cooldown_progress").style="width:"+(((this.p.cooldown_time*17)/750)*100)+"%";
         }
-        console.log(this.p.cooldown_time);
       }
       this.p.scale = this.p.hp / 100;
       var player = this.p;
-      this.children.forEach(function(child){
-        if(child.p.hp_bar){
-            child.p.label = ""+player.hp;
-        }
-      });
       document.getElementById("life_amount").style = "width:"+this.p.hp+"%;";
-      this.p.socket.emit('update', { playerId: this.p.playerId, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp, scale: this.p.scale});
+      this.p.socket.emit('update', { playerId: this.p.playerId, score:this.p.score, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp, scale: this.p.scale});
     },
     fire: function(){
         if(!this.p.cooldown){

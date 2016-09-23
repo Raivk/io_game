@@ -34,6 +34,10 @@ io.on('connection', function (socket) {
   socket.on('shockwave_trigger', function (data){
     io.emit('shockwave_triggered', data);
   });
+
+  socket.on('been_hit', function(data){
+    io.emit('hit_scored',data);
+  })
 });
 
 server.listen(8080);

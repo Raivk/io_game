@@ -45,10 +45,12 @@ require(objectFiles, function () {
       document.getElementById("player_name").innerHTML = player.p.name;
       document.getElementById("lifebar").style = "visibility:visible";
       player.trigger('join');
+      players.push({ player: player, playerId: player.p.playerId, score: player.p.score });
       stage.add('viewport').follow(player);
     });
 
     socket.on('updated', function (data) {
+
       var actor = players.filter(function (obj) {
         return obj.playerId == data['playerId'];
       })[0];
@@ -61,34 +63,58 @@ require(objectFiles, function () {
         actor.player.p.opacity = data['opacity'];
         actor.player.p.invincible = data['invincible'];
         actor.player.p.scale = data['scale'];
+        actor.score = data['score'];
         actor.player.p.update = true;
-        actor.player.children.forEach(function(child){
-            if(child.p.hp_bar){
-                child.p.label = ""+actor.player.p.hp;
-            }
-        });
         if(actor.player.p.hp <= 0){
             actor.player.destroy();
         }
       } else {
-        var temp = new Q.Actor({ playerId: data['playerId'],scale: data['scale'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
-        players.push({ player: temp, playerId: data['playerId'] });
+        var temp = new Q.Actor({ playerId: data['playerId'], scale: data['scale'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
+        players.push({ player: temp, playerId: data['playerId'], score: data['score'] });
         stage.insert(temp);
         stage.insert(new Q.UI.Text({
           label: temp.p.name,
           color: "grey",
           x: 0,
-          y: -40
-        }), temp);
-        stage.insert(new Q.UI.Text({
-            label: ""+temp.p.hp,
-            color: "grey",
-            x: 0,
-            y: 40,
-            hp_bar:100
+          y: -50
         }), temp);
       }
+
+      if(player != undefined){
+        for(var index = 0; index < players.length ; index++){
+            if(players[index].playerId == player.p.playerId){
+                players[index].score = player.p.score;
+            }
+        }
+      }
+
+      players.sort(function(a,b){
+        if(a.score > b.score){
+            return -1;
+        }
+        if(a.score == b.score){
+              return 0;
+        }
+        if(a.score < b.score){
+              return 1;
+        }
+      });
+
+      for(var i = 0; i < 5 ; i++){
+        if(players[i] == undefined){
+          //nothing
+        }
+        else{
+          document.getElementById("score_row_"+(i+1)).innerHTML = players[i].player.p.name + " : " + players[i].score;
+        }
+      }
     });
+
+    socket.on('hit_scored',function(data){
+        if(data['playerId'] == player.p.playerId){
+            player.p.score+=25;
+        }
+    })
 
     socket.on('shockwave_triggered', function (data){
         if(data['playerId'] == player.p.playerId){
@@ -96,7 +122,7 @@ require(objectFiles, function () {
             shockwave.play("evolve");
         }
         else{
-            shockwave = new Q.Shockwave({ type:16, collisionMask:8, x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+            shockwave = new Q.Shockwave({ type:16, collisionMask:8, sent_by: data['playerId'], x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
             shockwave.play("evolve");
         }
         stage.insert(shockwave);
@@ -104,6 +130,9 @@ require(objectFiles, function () {
 
     socket.on('player_death',function (data){
         //Someone else died. need to kill it immediately
+        if(data['sent_by'] == player.p.playerId){
+            player.p.score += 100;
+        }
         var player_to_kill = players.filter(function (obj) {
             return obj.playerId == data['playerId'];
         })[0];
