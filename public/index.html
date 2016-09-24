@@ -7,8 +7,8 @@
     <link rel="stylesheet" type="text/css" href="css/colors.css"/>
 </head>
 <body>
-<div id="scoreboard">
-    <ul>
+<div id="scoreboard" class="primary-background shadow">
+    <ul class="list--unstyled" id="score_list">
         <li id="score_row_1"></li>
         <li id="score_row_2"></li>
         <li id="score_row_3"></li>
@@ -42,18 +42,18 @@
         <h2 id="player_name"></h2>
     </div>
     <div row>
-        <div id="lifebar" class="progress progress--large primary-background" style="visibility:hidden">
+        <div id="lifebar" class="progress progress--large primary-background shadow-soft" style="visibility:hidden">
             <span id="life_amount" class="accent-background" style="width: 100%">HP</span>
         </div>
     </div>
-    <div row>
+    <div row class="primary-background shadow-soft">
+        <h5 id="own_score" class="white-foreground">SCORE : <span id="score_amount">0</span></h5>
+    </div>
+    <div row id="cooldown_row">
         <div id="cooldown_display" class="progress progress--striped progress--animate"
              style="visibility:hidden">
             <span id="cooldown_progress" style="width:100%" class="primary-background">COOLDOWN</span>
         </div>
-    </div>
-    <div row>
-        <h5 id="own_score">SCORE : <span id="score_amount">0</span></h5>
     </div>
 </div>
 
