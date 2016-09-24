@@ -33,8 +33,7 @@ require([], function () {
         type:8,
         collisionMask:1,
         regen_time:0,
-        cooldown_time:0,
-        score:0
+        cooldown_time:0
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
@@ -121,7 +120,7 @@ require([], function () {
       this.p.scale = this.p.hp / 100;
       var player = this.p;
       document.getElementById("life_amount").style = "width:"+this.p.hp+"%;";
-      this.p.socket.emit('update', { playerId: this.p.playerId, score:this.p.score, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp, scale: this.p.scale});
+      this.p.socket.emit('update', { playerId: this.p.playerId, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp, scale: this.p.scale});
     },
     fire: function(){
         if(!this.p.cooldown){

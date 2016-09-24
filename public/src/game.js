@@ -35,6 +35,14 @@ function play(){
     document.getElementById("modal").style = "visibility:hidden";
 }
 
+socket.on("leaderboard_change",function(data){
+    document.getElementById("score_row_1").innerHTML = data["first"];
+    document.getElementById("score_row_2").innerHTML = data["second"];
+    document.getElementById("score_row_3").innerHTML = data["third"];
+    document.getElementById("score_row_4").innerHTML = data["fourth"];
+    document.getElementById("score_row_5").innerHTML = data["fifth"];
+});
+
 require(objectFiles, function () {
   function setUp (stage) {
 
@@ -45,7 +53,7 @@ require(objectFiles, function () {
       document.getElementById("player_name").innerHTML = player.p.name;
       document.getElementById("lifebar").style = "visibility:visible";
       player.trigger('join');
-      players.push({ player: player, playerId: player.p.playerId, score: player.p.score });
+      players.push({ player: player, playerId: player.p.playerId});
       stage.add('viewport').follow(player);
     });
 
@@ -63,14 +71,13 @@ require(objectFiles, function () {
         actor.player.p.opacity = data['opacity'];
         actor.player.p.invincible = data['invincible'];
         actor.player.p.scale = data['scale'];
-        actor.score = data['score'];
         actor.player.p.update = true;
         if(actor.player.p.hp <= 0){
             actor.player.destroy();
         }
       } else {
         var temp = new Q.Actor({ playerId: data['playerId'], scale: data['scale'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
-        players.push({ player: temp, playerId: data['playerId'], score: data['score'] });
+        players.push({ player: temp, playerId: data['playerId']});
         stage.insert(temp);
         stage.insert(new Q.UI.Text({
           label: temp.p.name,
@@ -79,42 +86,12 @@ require(objectFiles, function () {
           y: -50
         }), temp);
       }
-
-      if(player != undefined){
-        for(var index = 0; index < players.length ; index++){
-            if(players[index].playerId == player.p.playerId){
-                players[index].score = player.p.score;
-            }
-        }
-      }
-
-      players.sort(function(a,b){
-        if(a.score > b.score){
-            return -1;
-        }
-        if(a.score == b.score){
-              return 0;
-        }
-        if(a.score < b.score){
-              return 1;
-        }
-      });
-
-      for(var i = 0; i < 5 ; i++){
-        if(players[i] == undefined){
-          //nothing
-        }
-        else{
-          document.getElementById("score_row_"+(i+1)).innerHTML = players[i].player.p.name + " : " + players[i].score;
-        }
-      }
     });
 
-    socket.on('hit_scored',function(data){
-        if(data['playerId'] == player.p.playerId){
-            player.p.score+=25;
-        }
-    })
+    socket.on("score", function(data){
+        player.p.score = data["score"];
+        document.getElementById("score_amount").innerHTML = player.p.score;
+    });
 
     socket.on('shockwave_triggered', function (data){
         if(data['playerId'] == player.p.playerId){
@@ -130,9 +107,6 @@ require(objectFiles, function () {
 
     socket.on('player_death',function (data){
         //Someone else died. need to kill it immediately
-        if(data['sent_by'] == player.p.playerId){
-            player.p.score += 100;
-        }
         var player_to_kill = players.filter(function (obj) {
             return obj.playerId == data['playerId'];
         })[0];
