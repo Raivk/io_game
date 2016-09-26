@@ -73,18 +73,23 @@ require(objectFiles, function () {
         actor.player.p.scale = data['scale'];
         actor.player.p.update = true;
         if(actor.player.p.hp <= 0){
+            actor.p.name_container.destroy();
             actor.player.destroy();
         }
       } else {
         var temp = new Q.Actor({ playerId: data['playerId'], scale: data['scale'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
         players.push({ player: temp, playerId: data['playerId']});
         stage.insert(temp);
+        temp.p.name_container = stage.insert(new Q.UI.Container({
+                                      y: temp.p.y - 70,
+                                      x: temp.p.x
+                                    }));
         stage.insert(new Q.UI.Text({
-          label: temp.p.name,
-          color: "grey",
-          x: 0,
-          y: -50
-        }), temp);
+              label: temp.p.name,
+              color: "grey",
+              x: 0,
+              y: 0
+            }),temp.p.name_container);
       }
     });
 
@@ -111,6 +116,7 @@ require(objectFiles, function () {
             return obj.playerId == data['playerId'];
         })[0];
         if(player_to_kill){
+            player_to_kill.player.p.name_container.destroy();
             player_to_kill.player.destroy();
         }
     })

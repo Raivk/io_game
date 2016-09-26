@@ -7,16 +7,22 @@ require([], function () {
         frame:3,
         update: true,
         type: 16,
-        collisionMask: 8
+        collisionMask: 8,
+        name_container:{}
       });
-
       var temp = this;
       setInterval(function () {
         if (!temp.p.update) {
+          temp.p.name_container.destroy();
           temp.destroy();
         }
         temp.p.update = false;
       }, 1000);
+    },
+
+    step: function (dt) {
+      this.p.name_container.p.x = this.p.x;
+      this.p.name_container.p.y = this.p.y - 70;
     }
   });
 
