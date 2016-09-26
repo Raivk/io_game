@@ -93,6 +93,7 @@ require([], function () {
     },
 
     step: function (dt) {
+      Q.stage().centerOn(this.p.x,this.p.y);
       if(this.p.x >= 2800 || this.p.y >= 900 || this.p.x <= 0 || this.p.y <= 0){
         this.destroy();
         document.getElementById("death-modal").style = "visibility:visible";

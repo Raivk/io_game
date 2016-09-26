@@ -54,7 +54,7 @@ require(objectFiles, function () {
       document.getElementById("lifebar").style = "visibility:visible";
       player.trigger('join');
       players.push({ player: player, playerId: player.p.playerId});
-      stage.add('viewport').follow(player);
+      stage.add('viewport');
     });
 
     socket.on('updated', function (data) {
@@ -128,6 +128,31 @@ require(objectFiles, function () {
 
     setUp(stage);
   });
+
+//  var rtime;
+//  var timeout = false;
+//  var delta = 200;
+//  $(window).resize(function() {
+//      rtime = new Date();
+//      if (timeout === false) {
+//          timeout = true;
+//          setTimeout(resizeend, delta);
+//      }
+//  });
+//
+//  function resizeend() {
+//      if (new Date() - rtime < delta) {
+//          setTimeout(resizeend, delta);
+//      } else {
+//          timeout = false;
+//          document.getElementById("quintus_container").children[0].width = $(window).width();
+//          document.getElementById("quintus_container").children[0].height = $(window).height();
+//          Q.cssWidth =  $(window).width();
+//          Q.cssHeight = $(window).height();
+//          document.getElementById("quintus_container").children[0].style = "width:"+$(window).width()+";height:"+$(window).height()+"; position: relative; outline: 0px;";
+//          console.log(document.getElementById("quintus_container").children[0]);
+//      }
+//  }
 
   var files = [
     '/images/tiles.png',
