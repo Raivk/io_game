@@ -39,7 +39,8 @@ require([], function () {
         type:8,
         collisionMask:1,
         regen_time:0,
-        cooldown_time:0
+        cooldown_time:0,
+        points:[[0,-50],[50,0],[0,50],[-50,0]]
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
