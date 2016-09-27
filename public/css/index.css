@@ -51,7 +51,7 @@ body{
 
 .UI_Player{
     position:absolute;
-    bottom:15%;
+    bottom:5%;
     width: 40%;
     z-index:1000;
     margin-left:30%;

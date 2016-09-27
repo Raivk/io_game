@@ -96,6 +96,7 @@ require([], function () {
       Q.stage().centerOn(this.p.x,this.p.y);
       if(this.p.x >= 2800 || this.p.y >= 900 || this.p.x <= 0 || this.p.y <= 0){
         this.destroy();
+        this.p.socket.emit('death', {playerId: this.p.playerId,sent_by: undefined});
         document.getElementById("death-modal").style = "visibility:visible";
       }
       if (Q.inputs['up']) {
