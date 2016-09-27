@@ -35,7 +35,7 @@ require([], function () {
         hp: 100,
         scale:1,
         vyMult: 1,
-        growth: 10,
+        growth: 25,
         type:8,
         collisionMask:1,
         regen_time:0,
