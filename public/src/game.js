@@ -31,8 +31,10 @@ var objectFiles = [
 ];
 
 function play(){
-    socket.emit('play',{pseudo:document.getElementById("pseudo").value});
-    document.getElementById("modal").style = "visibility:hidden";
+    if(player == undefined){
+        socket.emit('play',{pseudo:document.getElementById("pseudo").value});
+        document.getElementById("modal").style = "visibility:hidden";
+    }
 }
 
 socket.on("leaderboard_change",function(data){
