@@ -127,7 +127,8 @@ require(objectFiles, function () {
 
   Q.scene('arena', function (stage) {
     stage.collisionLayer(new Q.TileLayer({ dataAsset: '/maps/arena.json', sheet: 'tiles' }));
-
+    var pools = new Q.TileLayer({name:"pools", type:0, dataAsset: "/maps/pools.json", sheet: "tiles"});
+    stage.collisionLayer(pools);
     setUp(stage);
   });
 
@@ -162,7 +163,8 @@ require(objectFiles, function () {
     '/images/player.png',
     '/images/player.json',
     '/images/wave.png',
-    '/images/wave.json'
+    '/images/wave.json',
+    '/maps/pools.json'
   ];
 
   Q.load(files.join(','), function () {
