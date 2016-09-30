@@ -43,6 +43,36 @@ socket.on("leaderboard_change",function(data){
     document.getElementById("score_row_3").innerHTML = data["third"];
     document.getElementById("score_row_4").innerHTML = data["fourth"];
     document.getElementById("score_row_5").innerHTML = data["fifth"];
+    if(data["first_id"] == selfId){
+        document.getElementById("score_row_1").style="font-weight:bold;";
+    }
+    else{
+        document.getElementById("score_row_1").style="font-weight:normal;";
+    }
+    if(data["second_id"] == selfId){
+        document.getElementById("score_row_2").style="font-weight:bold;";
+    }
+    else{
+        document.getElementById("score_row_2").style="font-weight:normal;";
+    }
+    if(data["third_id"] == selfId){
+        document.getElementById("score_row_3").style="font-weight:bold;";
+    }
+    else{
+        document.getElementById("score_row_3").style="font-weight:normal;";
+    }
+    if(data["fourth_id"] == selfId){
+        document.getElementById("score_row_4").style="font-weight:bold;";
+    }
+    else{
+        document.getElementById("score_row_4").style="font-weight:normal;";
+    }
+    if(data["fifth_id"] == selfId){
+        document.getElementById("score_row_5").style="font-weight:bold;";
+    }
+    else{
+        document.getElementById("score_row_5").style="font-weight:normal;";
+    }
 });
 
 require(objectFiles, function () {

@@ -40,7 +40,9 @@ require([], function () {
         collisionMask:1,
         regen_time:0,
         cooldown_time:0,
-        points:[[0,-50],[50,0],[0,50],[-50,0]]
+        points:[[0,-50],[50,0],[0,50],[-50,0]],
+        in_pool:false,
+        stack:0
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
@@ -97,7 +99,25 @@ require([], function () {
       if(this.p.x >= 800 && this.p.x <= 1600 && this.p.y >= 220 && this.p.y <= 680){
         //HERE ! Code for xp pool, change a boolean in player to say we're in pool (so set to true), set it to false if not in pool. Then a function (controlled via setInterval)
         //Will increment a stack and increment score accordingly over time.
-        console.log("in pool");
+        if(!this.p.in_pool){
+            this.p.in_pool = true;
+            var props = this.p;
+            props.interval = setInterval(function(){
+                props.socket.emit("pool_score",{playerId:props.playerId, stack:props.stack});
+                if(props.stack < 25){
+                    props.stack ++;
+                    document.getElementById("stack_amount").innerHTML = props.stack;
+                }
+            },5000);
+        }
+      }
+      else{
+        if(this.p.in_pool){
+            this.p.in_pool = false;
+            clearInterval(this.p.interval);
+            this.p.stack = 0;
+            document.getElementById("stack_amount").innerHTML = this.p.stack;
+        }
       }
       Q.stage().centerOn(this.p.x,this.p.y);
       if(this.p.x >= 2800 || this.p.y >= 900 || this.p.x <= 0 || this.p.y <= 0){

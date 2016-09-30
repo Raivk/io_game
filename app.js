@@ -104,6 +104,16 @@ io.on('connection', function (socket) {
     }
   });
 
+  socket.on('pool_score',function(data){
+    for(var i = 0; i < players.length; i++){
+        if(players[i].playerId == data['playerId']){
+            players[i].score += data['stack'] * 4;
+            calc_leaderboard();
+            players[i].socket.emit("score",{score:players[i].score});
+        }
+    }
+  });
+
   socket.on('disconnect', function(){
     for(var i = 0; i < players.length; i++){
         if(socket.pid == players[i].playerId){
