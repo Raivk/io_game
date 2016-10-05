@@ -96,9 +96,9 @@ require([], function () {
     },
 
     step: function (dt) {
+      console.log("x",this.p.x);
+      console.log("y",this.p.y);
       if(this.p.x >= 800 && this.p.x <= 1600 && this.p.y >= 220 && this.p.y <= 680){
-        //HERE ! Code for xp pool, change a boolean in player to say we're in pool (so set to true), set it to false if not in pool. Then a function (controlled via setInterval)
-        //Will increment a stack and increment score accordingly over time.
         if(!this.p.in_pool){
             this.p.in_pool = true;
             var props = this.p;
@@ -120,7 +120,7 @@ require([], function () {
         }
       }
       Q.stage().centerOn(this.p.x,this.p.y);
-      if(this.p.x >= 2800 || this.p.y >= 900 || this.p.x <= 0 || this.p.y <= 0){
+      if(this.p.x >= 5350 || this.p.y >= 2700 || this.p.x <= 0 || this.p.y <= 0){
         this.destroy();
         this.p.socket.emit('death', {playerId: this.p.playerId,sent_by: undefined});
         document.getElementById("death-modal").style = "visibility:visible";
