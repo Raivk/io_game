@@ -74,8 +74,8 @@ require([], function () {
                 this.p.speed = 300;
                 this.p.vyMult = 1.5;
                 this.p.hp = this.p.hp - col.obj.p.damage;
-                this.p.x -= -col.normalX * 50;
-                this.p.y -= -col.normalY * 50;
+                this.p.x -= -col.normalX * 160;
+                this.p.y -= -col.normalY * 160;
                 this.p.socket.emit('been_hit', {playerId: col.obj.p.sent_by});
                 if(this.p.hp <= 0){
                     this.destroy();
