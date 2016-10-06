@@ -96,9 +96,11 @@ require([], function () {
     },
 
     step: function (dt) {
-      console.log("x",this.p.x);
-      console.log("y",this.p.y);
-      if(this.p.x >= 800 && this.p.x <= 1600 && this.p.y >= 220 && this.p.y <= 680){
+      if((this.p.x >= 4850 && this.p.x <= 5150 && this.p.y >= 2050 && this.p.y <= 2240) ||
+         (this.p.x >= 1000 && this.p.x <= 1400 && this.p.y >= 400 && this.p.y <= 850) ||
+         (this.p.x >= 2900 && this.p.x <= 3140 && this.p.y >= 1120 && this.p.y <= 1350) ||
+         (this.p.x >= 4540 && this.p.x <= 4940 && this.p.y >= 380 && this.p.y <= 900) ||
+         (this.p.x >= 1880 && this.p.x <= 2540 && this.p.y >= 2100 && this.p.y <= 2540)){
         if(!this.p.in_pool){
             this.p.in_pool = true;
             var props = this.p;
