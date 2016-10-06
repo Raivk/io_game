@@ -80,7 +80,7 @@ require(objectFiles, function () {
 
     socket.on('connected', function (data) {
       selfId = data['playerId'];
-      player = new Q.Player({ playerId: selfId, x: 100, y: 100, socket: socket, name: data['pseudo'] });
+      player = new Q.Player({ playerId: selfId, x: Math.floor((Math.random() * 5000) + 40), y: Math.floor((Math.random() * 2500) + 40), socket: socket, name: data['pseudo'] });
       stage.insert(player);
       document.getElementById("player_name").innerHTML = player.p.name;
       document.getElementById("lifebar").style = "visibility:visible";
