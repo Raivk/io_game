@@ -42,7 +42,9 @@ require([], function () {
         cooldown_time:0,
         points:[[0,-50],[50,0],[0,50],[-50,0]],
         in_pool:false,
-        stack:0
+        stack:0,
+        default_speed:200,
+        default_vyMult:1
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
@@ -53,14 +55,14 @@ require([], function () {
       this.on('join', function () {
         this.p.invincible = true;
         this.p.opacity = 0.5;
-        this.p.speed = 300;
-        this.p.vyMult = 1.5;
+        this.p.speed = this.p.speed * 2;
+        this.p.vyMult = this.p.vyMult * 2;
         var temp = this;
         setTimeout(function () {
           temp.p.invincible = false;
           temp.p.opacity = 1;
-          temp.p.speed = 200;
-          temp.p.vyMult = 1;
+          temp.p.speed = temp.p.speed / 2;
+          temp.p.vyMult = temp.p.vyMult / 2;
         }, 3000);
       });
     },
@@ -71,8 +73,8 @@ require([], function () {
                 var playerProps = this.p;
                 this.p.invincible = true;
                 this.p.opacity = 0.5;
-                this.p.speed = 300;
-                this.p.vyMult = 1.5;
+                this.p.speed = this.p.speed * 2;
+                this.p.vyMult = this.p.vyMult * 2;
                 this.p.hp = this.p.hp - col.obj.p.damage;
                 this.p.x -= -col.normalX * 160;
                 this.p.y -= -col.normalY * 160;
@@ -83,10 +85,10 @@ require([], function () {
                     document.getElementById("death-modal").style = "visibility:visible";
                 }
                 setTimeout(function(){
-                    playerProps.invincible = false;
                     playerProps.opacity = 1;
-                    playerProps.speed = 200;
-                    playerProps.vyMult = 1;
+                    playerProps.speed = playerProps.speed / 2;
+                    playerProps.vyMult = playerProps.vyMult / 2;
+                    playerProps.invincible = false;
                 },750)
             }
             else{
@@ -154,6 +156,10 @@ require([], function () {
         }
       }
       this.p.scale = this.p.hp / 100;
+      if(!this.p.invincible){
+        this.p.speed = this.p.default_speed + (100 - this.p.hp);
+        this.p.vyMult = this.p.default_vyMult + (1 - (this.p.hp / 100));
+      }
       var player = this.p;
       document.getElementById("life_amount").style = "width:"+this.p.hp+"%;";
       this.p.socket.emit('update', { playerId: this.p.playerId, name: this.p.name, x: this.p.x, y: this.p.y, angle: this.p.angle, sheet: this.p.sheet, opacity: this.p.opacity, invincible: this.p.invincible, hp: this.p.hp, scale: this.p.scale});
