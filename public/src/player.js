@@ -110,7 +110,7 @@ require([], function () {
                     props.stack ++;
                     document.getElementById("stack_amount").innerHTML = props.stack;
                 }
-            },5000);
+            },2500);
         }
       }
       else{
