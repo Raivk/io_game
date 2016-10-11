@@ -146,11 +146,14 @@ require([], function () {
       if(this.p.regen_time == 30){
         this.p.regen_time = 0;
         if(this.p.hp < 100){
-            this.p.hp++;
+            this.p.hp+=this.p.regen_rate;
         }
       }
       else{
-        this.p.regen_time+=this.p.regen_rate;
+        this.p.regen_time++;
+      }
+      if(this.p.hp > 100){
+        this.p.hp = 100;
       }
       if(this.p.cooldown){
         this.p.cooldown_time++;

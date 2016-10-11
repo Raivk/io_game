@@ -49,9 +49,9 @@ function inc_range(){
 }
 
 function inc_regen(){
-    if(upgradable){
+    if(player.p.upgradable){
         player.p.upgrades.push(3);
-        player.p.regen_rate++;
+        player.p.regen_rate+=1;
         document.getElementById("upgrade_menu").style="visibility:hidden";
         player.p.upgradable = false;
     }
