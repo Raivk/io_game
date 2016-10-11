@@ -39,12 +39,18 @@ require([], function () {
         type:8,
         collisionMask:1,
         regen_time:0,
+        regen_rate:1,
         cooldown_time:0,
         points:[[0,-50],[50,0],[0,50],[-50,0]],
         in_pool:false,
         stack:0,
         default_speed:200,
-        default_vyMult:1
+        default_vyMult:1,
+        to_upgrade: 0,
+        upgradable:false,
+        damage:25,
+        score:0,
+        upgrades:[]
       });
       this.add('2d, platformerControls, animation');
       Q.input.on("fire",this,"fire");
@@ -144,7 +150,7 @@ require([], function () {
         }
       }
       else{
-        this.p.regen_time++;
+        this.p.regen_time+=this.p.regen_rate;
       }
       if(this.p.cooldown){
         this.p.cooldown_time++;
@@ -169,7 +175,7 @@ require([], function () {
             this.p.cooldown = true;
             document.getElementById("cooldown_display").style="visibility:visible";
             var p = this.p;
-            this.p.socket.emit('shockwave_trigger', { playerId: this.p.playerId, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: 40, sh_h: 40});
+            this.p.socket.emit('shockwave_trigger', {damage:this.p.damage, playerId: this.p.playerId, growth: this.p.growth, sh_x: this.p.x, sh_y: this.p.y, sh_w: 40, sh_h: 40});
             setTimeout(function(){
                 p.cooldown = false;
                 p.cooldown_time = 0;

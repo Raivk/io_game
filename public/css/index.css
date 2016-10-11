@@ -1,4 +1,12 @@
 
+#upgrade_menu{
+    position:absolute;
+    left:0;
+    top:0;
+    z-index:500;
+    visibility:hidden;
+}
+
 body{
     font-family: "robotolight", Arial, Verdana !important;
 }

@@ -30,6 +30,33 @@ var objectFiles = [
   './src/player'
 ];
 
+function inc_atq(){
+    if(player.p.upgradable){
+        player.p.upgrades.push(1);
+        player.p.damage += 10;
+        document.getElementById("upgrade_menu").style="visibility:hidden";
+        player.p.upgradable = false;
+    }
+}
+
+function inc_range(){
+    if(player.p.upgradable){
+        player.p.upgrades.push(2);
+        player.p.growth += 5;
+        document.getElementById("upgrade_menu").style="visibility:hidden";
+        player.p.upgradable = false;
+    }
+}
+
+function inc_regen(){
+    if(upgradable){
+        player.p.upgrades.push(3);
+        player.p.regen_rate++;
+        document.getElementById("upgrade_menu").style="visibility:hidden";
+        player.p.upgradable = false;
+    }
+}
+
 function play(){
     if(player == undefined){
         socket.emit('play',{pseudo:document.getElementById("pseudo").value});
@@ -126,17 +153,27 @@ require(objectFiles, function () {
     });
 
     socket.on("score", function(data){
+        if(!player.p.upgradable){
+            player.p.to_upgrade += data["score"] - player.p.score;
+        }
+        if(player.p.to_upgrade >= 2500 && player.p.upgrades.length < 3){
+            player.p.to_upgrade = 0;
+            document.getElementById("upgrade_menu").style="visibility:visible";
+            player.p.upgradable = true;
+        }
+        //TODO : after 3 upgrades, periodically upgrade the selected stat.
+        //Display a feedback on screen at each upgrade.
         player.p.score = data["score"];
         document.getElementById("score_amount").innerHTML = player.p.score;
     });
 
     socket.on('shockwave_triggered', function (data){
         if(data['playerId'] == player.p.playerId){
-            shockwave = new Q.Shockwave({ x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+            shockwave = new Q.Shockwave({damage:data['damage'], x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
             shockwave.play("evolve");
         }
         else{
-            shockwave = new Q.Shockwave({ type:16, collisionMask:8, sent_by: data['playerId'], x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+            shockwave = new Q.Shockwave({damage:data['damage'], type:16, collisionMask:8, sent_by: data['playerId'], x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
             shockwave.play("evolve");
         }
         stage.insert(shockwave);
