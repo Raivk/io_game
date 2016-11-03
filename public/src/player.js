@@ -50,6 +50,7 @@ require([], function () {
         upgradable:false,
         damage:25,
         score:0,
+        level_stack:0,
         upgrades:[]
       });
       this.add('2d, platformerControls, animation');

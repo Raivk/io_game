@@ -36,6 +36,11 @@ function inc_atq(){
         player.p.damage += 10;
         document.getElementById("upgrade_menu").style="visibility:hidden";
         player.p.upgradable = false;
+        player.p.level_stack--;
+        if(player.p.level_stack > 0){
+            document.getElementById("upgrade_menu").style="visibility:visible";
+            player.p.upgradable = true;
+        }
     }
 }
 
@@ -45,6 +50,11 @@ function inc_range(){
         player.p.growth += 5;
         document.getElementById("upgrade_menu").style="visibility:hidden";
         player.p.upgradable = false;
+        player.p.level_stack--;
+        if(player.p.level_stack > 0){
+            document.getElementById("upgrade_menu").style="visibility:visible";
+            player.p.upgradable = true;
+        }
     }
 }
 
@@ -54,6 +64,11 @@ function inc_regen(){
         player.p.regen_rate+=1;
         document.getElementById("upgrade_menu").style="visibility:hidden";
         player.p.upgradable = false;
+        player.p.level_stack--;
+        if(player.p.level_stack > 0){
+            document.getElementById("upgrade_menu").style="visibility:visible";
+            player.p.upgradable = true;
+        }
     }
 }
 
@@ -153,15 +168,13 @@ require(objectFiles, function () {
     });
 
     socket.on("score", function(data){
-        if(!player.p.upgradable){
-            player.p.to_upgrade += data["score"] - player.p.score;
-        }
-        if(player.p.to_upgrade >= 2500 && player.p.upgrades.length < 3){
+        player.p.to_upgrade += data["score"] - player.p.score;
+        if(player.p.to_upgrade >= 200){
+            player.p.level_stack++;
             player.p.to_upgrade = 0;
             document.getElementById("upgrade_menu").style="visibility:visible";
             player.p.upgradable = true;
         }
-        //TODO : after 3 upgrades, periodically upgrade the selected stat.
         //Display a feedback on screen at each upgrade.
         player.p.score = data["score"];
         document.getElementById("score_amount").innerHTML = player.p.score;
