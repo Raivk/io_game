@@ -124,5 +124,5 @@ io.on('connection', function (socket) {
   });
 });
 
-server.listen(8080);
+server.listen(process.env.PORT);
 console.log("Multiplayer app listening on port 8080");
