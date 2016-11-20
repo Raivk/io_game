@@ -207,8 +207,9 @@ require(objectFiles, function () {
     })
 
     socket.on("disconnect",function (data){
-        var player_to_kill = player.filter(function(obj){
-            return obj.playerId == data["pid"];
+        //Someone else died. need to kill it immediately
+        var player_to_kill = players.filter(function (obj) {
+            return obj.playerId == data['pid'];
         })[0];
         if(player_to_kill){
             player_to_kill.player.p.name_container.destroy();
