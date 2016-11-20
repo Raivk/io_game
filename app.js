@@ -117,6 +117,7 @@ io.on('connection', function (socket) {
   socket.on('disconnect', function(){
     for(var i = 0; i < players.length; i++){
         if(socket.pid == players[i].playerId){
+            io.emit('disconnect',{pid:socket.pid});
             players.splice(i,1);
             calc_leaderboard();
         }
