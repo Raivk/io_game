@@ -10,14 +10,14 @@ require([], function () {
         collisionMask: 8,
         name_container:{}
       });
-      var temp = this;
-      setInterval(function () {
-        if (!temp.p.update) {
-          temp.p.name_container.destroy();
-          temp.destroy();
-        }
-        temp.p.update = false;
-      }, 1000);
+//      var temp = this;
+//      setInterval(function () {
+//        if (!temp.p.update) {
+//          temp.p.name_container.destroy();
+//          temp.destroy();
+//        }
+//        temp.p.update = false;
+//      }, 1000);
     },
 
     step: function (dt) {
