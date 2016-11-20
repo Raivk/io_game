@@ -23,7 +23,7 @@ Q.gravityY = 0;
 require(['socket.io/socket.io.js']);
 
 var players = [];
-var socket = io.connect('http://localhost:8080');
+var socket = io.connect('http://shokwav.eu-2.evennode.com');
 var selfId, player;
 
 var objectFiles = [
