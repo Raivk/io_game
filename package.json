@@ -1,6 +1,7 @@
 {
   "repository": {
     "type": "git",
+    "license" : "GPL-3.0",
     "url": "https://github.com/Raivk/io_game.git"
   },
   "name": "io_game",
