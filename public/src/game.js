@@ -206,7 +206,7 @@ require(objectFiles, function () {
         }
     })
 
-    socket.on("disconnect",function (data)){
+    socket.on("disconnect",function (data){
         var player_to_kill = player.filter(function(obj){
             return obj.playerId == data["pid"];
         })[0];
@@ -214,7 +214,7 @@ require(objectFiles, function () {
             player_to_kill.player.p.name_container.destroy();
             player_to_kill.player.destroy();
         }
-    }
+    });
 
   }
 
