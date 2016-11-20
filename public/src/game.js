@@ -77,6 +77,9 @@ function play(){
         socket.emit('play',{pseudo:document.getElementById("pseudo").value});
         document.getElementById("modal").style = "visibility:hidden";
     }
+    document.getElementById('quintus').onblur = function (event) {
+        this.focus();
+    };
 }
 
 socket.on("leaderboard_change",function(data){

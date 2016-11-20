@@ -46,3 +46,7 @@
     background-color:#182337 !important;
     color:white;
 }
+
+.hover_white:hover{
+    background-color:white !important;
+}
