@@ -41,8 +41,8 @@ Q.gravityY = 0;
 require(['socket.io/socket.io.js']);
 
 var players = [];
-//var socket = io.connect('http://www.wavelings.xyz');
-var socket = io.connect('localhost:8080');
+var socket = io.connect('http://wavelings.eu-2.evennode.com/');
+//var socket = io.connect('localhost:8080');
 var selfId, player;
 
 var objectFiles = [
