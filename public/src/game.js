@@ -191,7 +191,7 @@ require(objectFiles, function () {
 
     socket.on("score", function(data){
         player.p.to_upgrade += data["score"] - player.p.score;
-        if(player.p.to_upgrade >= 200){
+        if(player.p.to_upgrade >= 1000){
             player.p.level_stack++;
             player.p.to_upgrade = 0;
             document.getElementById("upgrade_menu").style="visibility:visible";
