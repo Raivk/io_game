@@ -168,7 +168,7 @@ io.on('connection', function (socket) {
     });
 });
 
-port = process.env.PORT
-//port = 8080
+//port = process.env.PORT
+port = 8080
 server.listen(port);
 console.log("Multiplayer app listening on port "+port);

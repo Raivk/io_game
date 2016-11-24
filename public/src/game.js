@@ -52,8 +52,8 @@ require(['socket.io/socket.io.js']);
 var players = [];
 
 //Choose server IP
-var socket = io.connect('http://wavelings.eu-2.evennode.com/');
-//var socket = io.connect('localhost:8080');
+//var socket = io.connect('http://wavelings.eu-2.evennode.com/');
+var socket = io.connect('localhost:8080');
 
 //Vars to stock playerId alone and player
 var selfId, player;
