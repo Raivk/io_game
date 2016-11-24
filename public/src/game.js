@@ -235,6 +235,7 @@ require(objectFiles, function () {
             if(onScreen){
                 //NOT FOUND ! NEW ACTOR
                 var temp = new Q.Actor({ playerId: data['playerId'], scale: data['scale'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
+                temp.dead = false;
                 players.push({ player: temp, playerId: data['playerId']});
                 stage.insert(temp);
                 //Container and ui.text are for actor's name
@@ -315,8 +316,24 @@ require(objectFiles, function () {
             player_to_kill.player.p.name_container.destroy();
             player_to_kill.player.destroy();
             players.splice(players.indexOf(player_to_kill),1);
+            kill(player_to_kill.playerId);
         }
     })
+
+    //Sometimes, we receive an update from dead player right after its death (network delay)
+    //we need a delayed re-kill to ensure it disappear.
+    function kill(player_kill){
+        setInterval(function(){
+            var player_to_kill = players.filter(function (obj) {
+                return obj.playerId == player_kill;
+            })[0];
+            if(player_to_kill){
+                player_to_kill.player.p.name_container.destroy();
+                player_to_kill.player.destroy();
+                players.splice(players.indexOf(player_to_kill),1);
+            }
+        }, 4000);
+    }
     
     //Someone disconnected
     socket.on("disconnect",function (data){
