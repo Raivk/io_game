@@ -114,12 +114,14 @@ io.on('connection', function (socket) {
                 players.splice(j,1);
             }
         }
-        //We search the killer to award points
-        for(var i = 0 ; i < players.length ; i++){
-            if(players[i].playerId == data['sent_by']){
-                players[i].score += 100;
-                calc_leaderboard();
-                players[i].socket.emit("score",{score:players[i].score});
+        if(data['sent_by'] != undefined){
+            //We search the killer to award points
+            for(var i = 0 ; i < players.length ; i++){
+                if(players[i].playerId == data['sent_by']){
+                    players[i].score += 100;
+                    calc_leaderboard();
+                    players[i].socket.emit("score",{score:players[i].score});
+                }
             }
         }
         //Send back to everyone that a player has died
