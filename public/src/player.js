@@ -109,8 +109,8 @@ require([], function () {
                     Q.audio.play('hit.wav');
                 }
                 if(this.p.hp <= 0){
-                    this.destroy();
                     this.p.socket.emit('death', {playerId: this.p.playerId,sent_by: col.obj.p.sent_by});
+                    this.destroy();
                     document.getElementById("death-modal").style = "visibility:visible";
                 }
                 setTimeout(function(){
@@ -154,8 +154,8 @@ require([], function () {
       }
       Q.stage().centerOn(this.p.x,this.p.y);
       if(this.p.x >= 5350 || this.p.y >= 2700 || this.p.x <= 0 || this.p.y <= 0){
-        this.destroy();
         this.p.socket.emit('death', {playerId: this.p.playerId,sent_by: undefined});
+        this.destroy();
         document.getElementById("death-modal").style = "visibility:visible";
       }
       if (Q.inputs['up']) {
