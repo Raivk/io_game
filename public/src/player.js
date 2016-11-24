@@ -105,6 +105,9 @@ require([], function () {
                 this.p.x -= -col.normalX * 160;
                 this.p.y -= -col.normalY * 160;
                 this.p.socket.emit('been_hit', {playerId: col.obj.p.sent_by});
+                if(sound_enable){
+                    Q.audio.play('hit.wav');
+                }
                 if(this.p.hp <= 0){
                     this.destroy();
                     this.p.socket.emit('death', {playerId: this.p.playerId,sent_by: col.obj.p.sent_by});

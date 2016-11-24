@@ -16,7 +16,7 @@
 */
 
 //Initialize the game with Quintus
-var Q = Quintus({audioSupported: [ 'wav','mp3' ]})
+var Q = Quintus({audioSupported: [ 'wav' ]})
       .include('Sprites, Scenes, Input, 2D, Anim, Touch, UI, Audio')
       .setup({ maximize: true })
       .enableSound();
@@ -41,6 +41,10 @@ Q.input.mouseControls({cursor:true});
 //No gravity, topdown game
 Q.gravityY = 0;
 
+//Load sounds
+Q.load(["wave.wav"]);
+Q.load(["hit.wav"]);
+
 //We need socket.io to enable connection with server
 require(['socket.io/socket.io.js']);
 
@@ -53,6 +57,9 @@ var socket = io.connect('localhost:8080');
 
 //Vars to stock playerId alone and player
 var selfId, player;
+
+//Bool to enable / disable sound
+var sound_enable = true;
 
 //Required by quintus
 var objectFiles = [
@@ -122,6 +129,19 @@ function play(){
     };
 }
 
+//Called when clicking sound button
+function sound(){
+    if(sound_enable){
+        document.getElementById("sound_button").innerHTML = "sound : OFF";
+        sound_enable = false;
+    }
+    else{
+        document.getElementById("sound_button").innerHTML = "sound : ON";
+        sound_enable = true;
+    }
+
+}
+
 //Change leaderboard when server says so
 //NEED TO FIND A CLEANER WAY TO DO IT (array?)
 socket.on("leaderboard_change",function(data){
@@ -165,7 +185,7 @@ socket.on("leaderboard_change",function(data){
 //SETUP STAGE
 require(objectFiles, function () {
     function setUp (stage) {
-    
+
     //Server sent back confirmation after play has been sent by player
     socket.on('connected', function (data) {
         selfId = data['playerId'];
@@ -179,44 +199,73 @@ require(objectFiles, function () {
         players.push({ player: player, playerId: player.p.playerId});
         stage.add('viewport');
     });
-        
-    //A player as updated its position
-    socket.on('updated', function (data) {
+
+
+    function updateActor(data,onScreen){
         //Search for specified player
         var actor = players.filter(function (obj) {
             return obj.playerId == data['playerId'];
         })[0];
         //FOUND
-        if (actor) {
-            actor.player.p.x = data['x'];
-            actor.player.p.hp = data['hp'];
-            actor.player.p.y = data['y'];
-            actor.player.p.angle = data['angle'];
-            actor.player.p.sheet = data['sheet'];
-            actor.player.p.opacity = data['opacity'];
-            actor.player.p.invincible = data['invincible'];
-            actor.player.p.scale = data['scale'];
-            actor.player.p.update = true;
-            if(actor.player.p.hp <= 0){
-                actor.p.name_container.destroy();
+        if(actor){
+            //Test if player on screen
+            if(onScreen){
+                actor.player.p.x = data['x'];
+                actor.player.p.hp = data['hp'];
+                actor.player.p.y = data['y'];
+                actor.player.p.angle = data['angle'];
+                actor.player.p.sheet = data['sheet'];
+                actor.player.p.opacity = data['opacity'];
+                actor.player.p.invincible = data['invincible'];
+                actor.player.p.scale = data['scale'];
+                actor.player.p.update = true;
+                if(actor.player.p.hp <= 0){
+                    actor.player.p.name_container.destroy();
+                    actor.player.destroy();
+                    players.splice(players.indexOf(actor),1);
+                }
+            }
+            else{
+                actor.player.p.name_container.destroy();
                 actor.player.destroy();
+                players.splice(players.indexOf(actor),1);
             }
         } else {
-            //NOT FOUND ! NEW ACTOR
-            var temp = new Q.Actor({ playerId: data['playerId'], scale: data['scale'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
-            players.push({ player: temp, playerId: data['playerId']});
-            stage.insert(temp);
-            //Container and ui.text are for actor's name
-            temp.p.name_container = stage.insert(new Q.UI.Container({
-                y: temp.p.y - 70,
-                x: temp.p.x
-            }));
-            stage.insert(new Q.UI.Text({
-                label: temp.p.name,
-                color: "grey",
-                x: 0,
-                y: 0
-            }),temp.p.name_container);
+            //Test if player on screen
+            if(onScreen){
+                //NOT FOUND ! NEW ACTOR
+                var temp = new Q.Actor({ playerId: data['playerId'], scale: data['scale'],name: data['name'],hp: data['hp'], x: data['x'], y: data['y'], angle: data['angle'], sheet: data['sheet'], opacity: data['opacity'], invincible: data['invincible']});
+                players.push({ player: temp, playerId: data['playerId']});
+                stage.insert(temp);
+                //Container and ui.text are for actor's name
+                temp.p.name_container = stage.insert(new Q.UI.Container({
+                    y: temp.p.y - 70,
+                    x: temp.p.x
+                }));
+                stage.insert(new Q.UI.Text({
+                    label: temp.p.name,
+                    color: "grey",
+                    x: 0,
+                    y: 0
+                }),temp.p.name_container);
+            }
+        }
+    }
+
+    //A player as updated its position
+    socket.on('updated', function (data) {
+        //Not playing, display other players while in play menu
+        if(player == undefined){
+            updateActor(data,true);
+        }
+        else{
+            //test if player is on screen
+            if(Math.abs(data['x'] - player.p.x) < ($(window).width() / 2) && Math.abs(data['y'] - player.p.y) < ($(window).height() / 2)){
+                updateActor(data,true);
+            }
+            else{
+                updateActor(data,false);
+            }
         }
     });
         
@@ -237,17 +286,23 @@ require(objectFiles, function () {
         
     //Someoe sent a shockwave (or we sent it)
     socket.on('shockwave_triggered', function (data){
-        //We sent it
-        if(data['playerId'] == player.p.playerId){
-            shockwave = new Q.Shockwave({damage:data['damage'], x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
-            shockwave.play("evolve");
+        //Test if on screen
+        if(Math.abs(data['sh_x'] - player.p.x) < ($(window).width() / 2 + 50) && Math.abs(data['sh_y'] - player.p.y) < ($(window).height() / 2 + 50)){
+            //We sent it
+            if(data['playerId'] == player.p.playerId){
+                shockwave = new Q.Shockwave({damage:data['damage'], x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+                shockwave.play("evolve");
+            }
+            else{
+                //An ennemy sent it
+                shockwave = new Q.Shockwave({damage:data['damage'], type:16, collisionMask:8, sent_by: data['playerId'], x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
+                shockwave.play("evolve");
+            }
+            if(sound_enable){
+                Q.audio.play('wave.wav');
+            }
+            stage.insert(shockwave);
         }
-        else{
-            //An ennemy sent it
-            shockwave = new Q.Shockwave({damage:data['damage'], type:16, collisionMask:8, sent_by: data['playerId'], x: data['sh_x'],y: data['sh_y'],w: data['sh_w'],h: data['sh_h'], growth: data['growth']});
-            shockwave.play("evolve");
-        }
-        stage.insert(shockwave);
     })
     
     //Someone died
@@ -259,6 +314,7 @@ require(objectFiles, function () {
         if(player_to_kill){
             player_to_kill.player.p.name_container.destroy();
             player_to_kill.player.destroy();
+            players.splice(players.indexOf(player_to_kill),1);
         }
     })
     
@@ -271,6 +327,7 @@ require(objectFiles, function () {
         if(player_to_kill){
             player_to_kill.player.p.name_container.destroy();
             player_to_kill.player.destroy();
+            players.splice(players.indexOf(player_to_kill),1);
         }
     });
 
